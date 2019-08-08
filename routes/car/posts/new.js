@@ -1,20 +1,9 @@
 // const log = require('../../custom_modules/console-color/console-color');
-const CarModel = require('../../db/mongo/car');
-const UserModel = require('../../db/mongo/user');
-const validator = require('../__common__/validator');
-const { idGenerate } = require('../../db/mongo/__common__/idGenerate');
+const CarModel = require('../../../db/mongo/car');
+const UserModel = require('../../../db/mongo/user');
+const validator = require('../../__common__/validator');
+const { idGenerate } = require('../../../db/mongo/__common__/idGenerate');
 
-/**
- req.body = {
-    name: String, (10-20 chars)
-    vin: String,
-    owner(username): String,
-    brand: String,
-    model: String,
-    type: String,
-    fuel_type: String
-  };
- */
 module.exports = async (req, res) => {
   try {
     if (!('username' in req.profile)) {
@@ -54,20 +43,9 @@ module.exports = async (req, res) => {
       });
     }
 
-    /** Check if Car with 'vin' already exists */
-    /** If exists, return response with error */
-    if (await validator.carExistsV(postData.vin)) {
-      return res.json({
-        status: 400,
-        error: 'Car with this vin-number already exists!'
-      });
-    }
-
     /** Creating new car data */
-    let now = new Date();
-    let newId = await idGenerate('cars');
     const newCarModel = new CarModel({
-      _id: newId,
+      _id: await idGenerate('cars'),
       name: postData.name,
       vin: postData.vin,
       owner: userId,
@@ -75,7 +53,7 @@ module.exports = async (req, res) => {
       model: postData.model,
       type: postData.type,
       fuel_type: postData.fuel_type,
-      created: now,
+      created: new Date(),
       created_by: {
         collection: 'users',
         id: userId,
@@ -84,10 +62,15 @@ module.exports = async (req, res) => {
 
     /** Save new user to DB */
     let saveCarResult = await CarModel.save(newCarModel);
-    customLog.info(`[${new Date()}] New CAR created ('_id': '${saveCarResult._id}')`);
+    customLog.info(`[${new Date()}] New CAR created ('_id': '${saveCarResult._id}') by user ('_id': '${userId}')`);
 
     let user = await UserModel.findOne({_id: userId});
     user.cars_owned.push(saveCarResult._id);
+    user.updated = new Date();
+    user.updated_by = {
+      collection: 'users',
+      id: userId
+    };
     await user.save();
 
     return res.json({

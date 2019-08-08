@@ -11,7 +11,7 @@ module.exports = (req, res) => {
       postRegisterRoute(req, res);
     }
   } catch (err) {
-    customLog.error(err);
+    customLog.error(err.stack);
 
     return res.json({
       status: 500,

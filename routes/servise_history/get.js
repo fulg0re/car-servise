@@ -1,24 +1,30 @@
 const mongoose = require('mongoose');
-// const log = require('../../custom_modules/console-color/console-color');
 const CarModel = require('../../db/mongo/car');
 const ServiseHistoryModel = require('../../db/mongo/servise_history');
 const UserModel = require('../../db/mongo/user');
 
 module.exports = async (req, res) => {
   try {
-    let reqParams = req.query;
-
-    if (!('username' in reqParams)) {
+    if (!('username' in req.profile)) {
       return res.json({
         status: 400,
         error: 'Username is required'
       })
     }
 
+    const { username } = req.profile;
+
     let userCars = await UserModel.aggregate([
-        { $match: {username: reqParams.username} },
+        { $match: {username: username} },
         { $project: { cars_owned: 1 } }
       ]);
+
+    if (userCars.length <= 0) {
+      return res.json({
+        status: 400,
+        error: 'User do not have cars'
+      })
+    }
 
     let serviseHistory = await ServiseHistoryModel.aggregate([
         { $match: { car_id: { $in: userCars[0].cars_owned } } },
@@ -31,6 +37,7 @@ module.exports = async (req, res) => {
           }
         }
       ]);
+    customLog.info(`[${new Date()}] >>> User ('_id': '${userCars[0]._id}') get cars servise history`);
 
     return res.json({
       status: 200,

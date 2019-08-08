@@ -17,7 +17,7 @@ const connect = (callback) => {
       callback();
     });
   } catch (err) {
-    customLog.error(err);
+    customLog.error(err.stack);
   }
 };
 

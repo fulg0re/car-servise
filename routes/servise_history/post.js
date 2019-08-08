@@ -1,4 +1,3 @@
-// const log = require('../../custom_modules/console-color/console-color');
 const CarModel = require('../../db/mongo/car');
 const UserModel = require('../../db/mongo/user');
 const ServiseHistoryModel = require('../../db/mongo/servise_history');
@@ -7,10 +6,18 @@ const { idGenerate } = require('../../db/mongo/__common__/idGenerate');
 
 module.exports = async (req, res) => {
   try {
+    if (!('username' in req.profile)) {
+      return res.json({
+        status: 400,
+        error: 'Username is required'
+      })
+    }
+
+    const { username } = req.profile;
     const postData = req.body;
 
     /** Get user ID */
-    const userId = await validator.userExistsV(postData.username);
+    const userId = await validator.userExistsV(username);
 
     /** If user not exists, return response with error */
     if (!userId) {
@@ -21,7 +28,7 @@ module.exports = async (req, res) => {
     }
 
     /** Get car ID */
-    const carId = await validator.carOwnerV(postData.username, postData.vin);
+    const carId = await validator.carOwnerV(username, postData.vin);
 
     /** If not, return response with error */
     if (!carId) {
