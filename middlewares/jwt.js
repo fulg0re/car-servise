@@ -21,7 +21,7 @@ const jwtMiddleware = async (req, res, next) => {
     next();
 
   } catch (err) {
-    customLog.error(err);
+    customLog.error(err.stack);
 
     if (err.name === 'TokenExpiredError') {
       return res.json({

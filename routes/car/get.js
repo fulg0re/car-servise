@@ -16,9 +16,10 @@ module.exports = async (req, res) => {
         { $match: {username: username} },
         { $project: { cars_owned: 1 } }
       ]);
+    let user = userCars[0];
 
     let cars = await CarModel.aggregate([
-        { $match: {_id: { $in: userCars[0].cars_owned } } },
+        { $match: {_id: { $in: user.cars_owned } } },
         { $lookup: {
             from: "servise_histories",
             localField: "_id",
@@ -41,6 +42,7 @@ module.exports = async (req, res) => {
           }
         }
       ]);
+    customLog.info(`[${new Date()}] >>> User ('_id': '${user._id}') get cars with servise history`);
 
     return res.json({
       status: 200,

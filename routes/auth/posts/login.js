@@ -17,17 +17,18 @@ module.exports = async (req, res) => {
         error: 'Wrong username or password!'
       })
     }
+    customLog.info(`[${new Date()}] >>> User logged-in ('_id': '${user._id}')`);
 
     return res.json({
       status: 200,
-      message: 'User logined',
+      message: 'User logged-in',
       token: await createToken({
         username: user.username,
         email: user.email
       })
     });
   } catch (err) {
-    customLog.error(err);
+    customLog.error(err.stack);
 
     return res.json({
       status: 500,

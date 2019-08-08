@@ -35,16 +35,14 @@ module.exports = async (req, res) => {
     }
 
     /** Creating new user data */
-    let now = new Date();
-    let newId = await idGenerate('users');
     const newUserModel = new UserModel({
-      _id: newId,
+      _id: await idGenerate('users'),
       username: postData.username,
       password: await hashPassword(postData.password),
       email: postData.email,
       fullname: postData.fullname,
       cars_owned: [],
-      created: now
+      created: new Date()
     });
 
     /** Save new user to DB */
@@ -60,7 +58,7 @@ module.exports = async (req, res) => {
       })
     });
   } catch (err) {
-    customLog.error(err);
+    customLog.error(err.stack);
 
     return res.json({
       status: 500,
