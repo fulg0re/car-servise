@@ -1,0 +1,51 @@
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+const USERNAME_LENGTH_MIN = 5;
+const USERNAME_LENGTH_MAX = 15;
+
+const PASSWORD_LENGTH_MIN = 8;
+const PASSWORD_LENGTH_MAX = 30;
+
+const USER_FULLNAME_LENGTH_MIN = 10;
+const USER_FULLNAME_LENGTH_MAX = 30;
+
+const CAR_NAME_LENGTH_MIN = 5;
+const CAR_NAME_LENGTH_MAX = 20;
+
+const CAR_VIN_LENGTH = 17;
+
+const CAR_MODEL_LENGTH_MIN = 1;
+const CAR_MODEL_LENGTH_MAX = 20;
+
+const CAR_TYPE_LENGTH_MIN = 1;
+const CAR_TYPE_LENGTH_MAX = 20;
+
+const CAR_BRANDS = [
+  'Renault',
+  'Nissan',
+  'BMW',
+  'Mazda'
+];
+
+const FUEL_TYPES = [
+  'Diesel'
+];
+
+module.exports = {
+  EMAIL_REGEX,
+  USERNAME_LENGTH_MIN,
+  USERNAME_LENGTH_MAX,
+  PASSWORD_LENGTH_MIN,
+  PASSWORD_LENGTH_MAX,
+  USER_FULLNAME_LENGTH_MIN,
+  USER_FULLNAME_LENGTH_MAX,
+  CAR_NAME_LENGTH_MIN,
+  CAR_NAME_LENGTH_MAX,
+  CAR_VIN_LENGTH,
+  CAR_BRANDS,
+  CAR_MODEL_LENGTH_MIN,
+  CAR_MODEL_LENGTH_MAX,
+  CAR_TYPE_LENGTH_MIN,
+  CAR_TYPE_LENGTH_MAX,
+  FUEL_TYPES
+};

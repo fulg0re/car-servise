@@ -1,0 +1,11 @@
+{
+  "name": "console-color",
+  "version": "1.0.0",
+  "description": "",
+  "main": "console-colore.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pavlo Denys",
+  "license": "ISC"
+}
