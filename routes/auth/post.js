@@ -1,8 +1,7 @@
 const postLoginRoute = require('./posts/login');
 const postRegisterRoute = require('./posts/register');
-const postCarsOwnedRoute = require('./posts/carsOwned');
 
-module.exports = (req, res, next) => {
+module.exports = (req, res) => {
   try {
     let postType = req.params.type;
     if (postType === 'login') {
@@ -10,9 +9,6 @@ module.exports = (req, res, next) => {
     } else
     if (postType === 'register') {
       postRegisterRoute(req, res);
-    } else
-    if (postType === 'cars_owned') {
-      postCarsOwnedRoute(req, res);
     }
   } catch (err) {
     customLog.error(err);
@@ -22,4 +18,4 @@ module.exports = (req, res, next) => {
       error: 'Server Error!'
     });
   }
-}
+};

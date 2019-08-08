@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const mainConfig = require('./config/main');
 const connection = require('./db/mongo/__connection__/index');
 const bodyParser = require('body-parser');
-const http = require('http');
 const express = require('express');
 const routes = require('./routes');
 const { jwtMiddleware } = require('./middlewares/jwt');

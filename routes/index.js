@@ -3,21 +3,27 @@ const router = require('express').Router(),
       // authPostCarsOwned = require('./auth/postCarsOwned'),
       authGet = require('./auth/get'),
       authPut = require('./auth/put'),
-      carPost = require('./car/post'),
+      carPostMiddleware = require('./car/post'),
       carGet = require('./car/get'),
       serviseHistoryPost = require('./servise_history/post'),
       serviseHistoryGet = require('./servise_history/get');
 
 // router.route('/auth/cars_owned')
-//   .post((req, res) => authPostCarsOwned(req, res));
+//   .posts((req, res) => authPostCarsOwned(req, res));
 
+/**
+ * type - login|register
+ * */
 router.route('/auth/:type')
   .post((req, res) => authPostMiddleware(req, res))
   .get((req, res) => authGet(req, res))
   .put((req, res) => authPut(req, res));
 
-router.route('/car')
-  .post((req, res) => carPost(req, res))
+/**
+ * type - new|owner
+ * */
+router.route('/car/:type')
+  .post((req, res) => carPostMiddleware(req, res))
   .get((req, res) => carGet(req, res));
 
 router.route('/servise_history')
